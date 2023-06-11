@@ -1,1 +1,14 @@
-
+version: 0.0
+os: linux
+files:
+  - source: /dist
+    destination: /var/www/html/
+hooks:
+  BeforeInstall:
+    - location: codedeploy/BeforeInstall.sh
+      timeout: 600
+      runas: root
+  AfterInstall:
+    - location: codedeploy/AfterInstall.sh
+      timeout: 600
+      runas: root
