@@ -14,7 +14,7 @@ ng test
 ## Running end-to-end tests
 ng e2e
 
-#required packages versions
+## Required packages versions
 node v8.17.0
 npm 6.13.4
 angular 6.0.3
