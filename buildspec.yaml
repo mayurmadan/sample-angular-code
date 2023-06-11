@@ -1,0 +1,30 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      nodejs: 8.17.0
+    commands:
+      - npm install -g @angular/cli@6.0.3
+  pre_build:
+    commands:
+      ## Install dependencies in the Angular 
+      - npm install
+  build:
+    commands:
+      ## Creating angular ui build
+      - ng build
+  post_build:
+    commands:
+      ## the node server will need this to run the Express app
+      - cp ./express/package.json ./dist
+      ## this is used for the CodeDeploy Agent to install and run the app
+      - cp ./appspec.yml ./dist
+      ## this is used for systemctl to run the node app in the background
+      - cp ./studycards.service ./dist
+      ## these scripts will be used as part of the CodeDeploy process
+      - cp -r ./shScripts ./dist
+artifacts:
+  files:
+  ##this will take all files within the dist folder which will then be zipped by CodeBuild then stored in S3
+    - "**/*"
+  base-directory: "dist"	  
