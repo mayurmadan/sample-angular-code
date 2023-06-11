@@ -16,5 +16,7 @@ ng e2e
 
 ## Required packages versions
 node v8.17.0
+
 npm 6.13.4
+
 angular 6.0.3
