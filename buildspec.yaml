@@ -17,6 +17,8 @@ phases:
     commands:
       ## this is used for the CodeDeploy Agent to install and run the app
       - cp ./appspec.yml ./dist
+      - cp ./BeforeInstall.sh ./dist
+      - cp ./AfterInstall.sh ./dist
 artifacts:
   files:
   ##this will take all files within the dist folder which will then be zipped by CodeBuild then stored in S3
