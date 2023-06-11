@@ -4,7 +4,7 @@ phases:
     runtime-versions:
       nodejs: 10
       commands:
-      - npm install -g @angular/cli@6.0.3
+      - npm i -g @angular/cli@6.0.3
   pre_build:
     commands:
       ## Install dependencies in the Angular 
