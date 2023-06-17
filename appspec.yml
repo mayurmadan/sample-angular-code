@@ -5,10 +5,10 @@ files:
     destination: /var/www/html/
 hooks:
   BeforeInstall:
-    - location: codedeploy/BeforeInstall.sh
+    - location: BeforeInstall.sh
       timeout: 300
       runas: root
   AfterInstall:
-    - location: codedeploy/AfterInstall.sh
+    - location: AfterInstall.sh
       timeout: 300
       runas: root
