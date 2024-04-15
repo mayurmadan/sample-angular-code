@@ -33,7 +33,7 @@ jobs:
           run: |
             IMAGE_TAG=${IMAGE_SHA:0:7} #Extracting the first 7 characters
             echo "commit id to use as tag is: $IMAGE_TAG"
-            docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+            docker build -t $REGISTRY/$REPOSITORY:latest .
             docker tag $REGISTRY/$REPOSITORY:$IMAGE_TAG $REGISTRY/$REPOSITORY:latest
             docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
             docker push $REGISTRY/$REPOSITORY:latest
