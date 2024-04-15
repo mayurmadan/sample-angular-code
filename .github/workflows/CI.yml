@@ -29,8 +29,10 @@ jobs:
           env:
             REGISTRY: ${{ steps.login-pf-aws-ecr.outputs.registry }}
             REPOSITORY: ${{secrets.AWS_ECR_REPO}}
-            IMAGE_TAG: ${{ github.sha }}
+            IMAGE_SHA: ${{ github.sha }} #get full commit id 40 words
           run: |
+            IMAGE_TAG=${IMAGE_SHA:0:7} #Extracting the first 7 characters
+            echo "commit id to use as tag is: $IMAGE_TAG"
             docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
             docker tag $REGISTRY/$REPOSITORY:$IMAGE_TAG $REGISTRY/$REPOSITORY:latest
             docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
