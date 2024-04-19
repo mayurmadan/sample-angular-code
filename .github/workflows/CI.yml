@@ -51,7 +51,9 @@ jobs:
             cat DOCKER_IMAGE_TAG.txt
             
             #####Setup ssh connection with target server#####
-            cat "$PRIVATE_KEY" > server_private.pem && chmod 0600 server_private.pem
+            cat "$PRIVATE_KEY" > server_private.pem
+            chmod 0600 server_private.pem
+            ls -lrth
             cat server_private.pem
             scp -o StrictHostKeyChecking=no -o LogLevel=ERROR -o UserKnownHostsFile=/dev/null -i server_private.pem DOCKER_IMAGE_TAG.txt $USER_NAME@$HOSTNAME:/tmp
             
