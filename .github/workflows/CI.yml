@@ -44,21 +44,14 @@ jobs:
             docker push $REGISTRY/$REPOSITORY:latest
             echo $REGISTRY/$REPOSITORY:$IMAGE_SHA > DOCKER_IMAGE_TAG.txt
             ls -lrth 
-            cat DOCKER_IMAGE_TAG.txt
-            
-            #####Setup ssh connection with target server#####
-            #echo "$PRIVATE_KEY" > server_private.pem
-            #chmod 0600 server_private.pem
-            #ls -lrth
-            #cat server_private.pem
-            #scp -o StrictHostKeyChecking=no -o LogLevel=ERROR -o UserKnownHostsFile=/dev/null -i server_private.pem DOCKER_IMAGE_TAG.txt $USER_NAME@$HOSTNAME:/tmp
-            
+            cat DOCKER_IMAGE_TAG.txt            
         - name: Setup ssh connection with target and deployment
           run: |
             echo "$PRIVATE_KEY" > server_private.pem
             chmod 0600 server_private.pem
             ls -lrth
             cat server_private.pem
+            
             #copy image name and tag to target server
             scp -o StrictHostKeyChecking=no -o LogLevel=ERROR -o UserKnownHostsFile=/dev/null -i server_private.pem DOCKER_IMAGE_TAG.txt $USER_NAME@$HOSTNAME:/tmp
 
