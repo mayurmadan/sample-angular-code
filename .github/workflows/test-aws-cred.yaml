@@ -60,9 +60,9 @@ jobs:
           ip addr
           curl ifconfig.me
               if echo "quit" | telnet 54.146.55.79 22 /dev/null 2>&1 | grep "Connected"; then
-                 echo "Connection successful."
+                 echo "Connection successful to test server."
               else
-                  echo "Connection failed."
+                  echo "Connection failed to test server."
               fi
           EOL
       - name: Run bash script
