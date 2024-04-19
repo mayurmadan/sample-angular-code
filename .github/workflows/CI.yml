@@ -68,6 +68,7 @@ jobs:
             sudo mkdir -p "${DOCKER_TAG}"
             echo "nginx:alpine" > image_name.txt
             export IMAGE=`cat image_name.txt`
+            sudo docker rm -f test
             sudo docker run -itd -p 81:80 --name=test $IMAGE
             exit
             EOF
