@@ -6,9 +6,9 @@ on:
   push: 
     branches: [ "master" ]
 env:
-  REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-  REPOSITORY: ${{secrets.AWS_ECR_REPO}}
-  IMAGE_SHA: ${{ github.sha }} #get full commit id 40 words   
+  #REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+  #REPOSITORY: ${{secrets.AWS_ECR_REPO}}
+  #IMAGE_SHA: ${{ github.sha }} #get full commit id 40 words   
   PRIVATE_KEY: ${{ secrets.TEST_SERVER_PRIVATE_KEY }}
   HOSTNAME: ${{secrets.TEST_SERVER_HOSTNAME}}
   USER_NAME: ec2-user
@@ -35,10 +35,10 @@ jobs:
           uses: aws-actions/amazon-ecr-login@v2          
 
         - name: Build, tag, and push docker image to Amazon ECR
-          #env:
-            #REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-            #REPOSITORY: ${{secrets.AWS_ECR_REPO}}
-            #IMAGE_SHA: ${{ github.sha }} #get full commit id 40 words
+          env:
+            REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            REPOSITORY: ${{secrets.AWS_ECR_REPO}}
+            IMAGE_SHA: ${{ github.sha }} #get full commit id 40 words
           run: |
             IMAGE_TAG=${IMAGE_SHA:0:7}  #extract first 7 letter from commit id
             echo "commit id to use as tag is: $IMAGE_TAG"
