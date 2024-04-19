@@ -40,4 +40,16 @@ jobs:
             echo $REGISTRY/$REPOSITORY:$IMAGE_SHA > DOCKER_IMAGE_TAG.txt
             ls -lrth 
             cat DOCKER_IMAGE_TAG.txt
-            pwd
+        - name: Setup ssh connection
+          env:
+              PRIVATE_KEY: ${{ secrets.TEST_SERVER_PRIVATE_KEY }}
+              HOSTNAME: ${{secrets.TEST_SERVER_HOSTNAME}}
+              USER_NAME: ec2-user
+              CONTAINER_NAME: test-ui
+              CONTAINER_PORT: 80
+              CONTAINER_IMAGE: ${{secrets.AWS_ECR_REPO}}
+          run: |
+            echo "$PRIVATE_KEY" > server_private.pem && chmod 0600 server_private.pem
+                scp -o StrictHostKeyChecking=no -o LogLevel=ERROR -o UserKnownHostsFile=/dev/null -i server_private.pem DOCKER_IMAGE_TAG.txt ec2-user@54.146.55.79:/tmp
+                #ssh -t -o StrictHostKeyChecking=no -o LogLevel=ERROR -o UserKnownHostsFile=/dev/null -i server_private.pem ${USER_NAME}@${HOSTNAME} << 'EOF'
+      		 		            
