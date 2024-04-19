@@ -68,8 +68,9 @@ jobs:
       - name: Run bash script
         run: |              
               ls -lrth
-              curl ifconfig.me
-              ip addr
+              echo "getting the detail for runner"
+              pwd  
+              ls -a
               bash connection.sh
           
 
