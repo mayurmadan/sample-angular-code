@@ -51,7 +51,7 @@ jobs:
             cat DOCKER_IMAGE_TAG.txt
             
             #####Setup ssh connection with target server#####
-            cat "$PRIVATE_KEY" > server_private.pem
+            echo "$PRIVATE_KEY" > server_private.pem
             chmod 0600 server_private.pem
             ls -lrth
             cat server_private.pem
