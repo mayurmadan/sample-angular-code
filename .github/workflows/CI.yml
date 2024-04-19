@@ -5,10 +5,9 @@ name: Push To ECR
 on: 
   push: 
     branches: [ "master" ]
+
+#golbal varibale for CICD    
 env:
-  #REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-  #REPOSITORY: ${{secrets.AWS_ECR_REPO}}
-  #IMAGE_SHA: ${{ github.sha }} #get full commit id 40 words   
   PRIVATE_KEY: ${{ secrets.TEST_SERVER_PRIVATE_KEY }}
   HOSTNAME: ${{secrets.TEST_SERVER_HOSTNAME}}
   USER_NAME: ec2-user
@@ -21,19 +20,16 @@ jobs:
     runs-on: ubuntu-latest  
     steps:  
         - name: Checkout the repo
-          uses: actions/checkout@v4   
-          
+          uses: actions/checkout@v4          
         - name: Configure AWS credentials
           uses: aws-actions/configure-aws-credentials@v4
           with:
             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            aws-region: ${{secrets.AWS_REGION}}
-            
+            aws-region: ${{secrets.AWS_REGION}}        
         - name: Login to Amazon ECR
           id: login-ecr
           uses: aws-actions/amazon-ecr-login@v2          
-
         - name: Build, tag, and push docker image to Amazon ECR
           env:
             REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -51,21 +47,28 @@ jobs:
             cat DOCKER_IMAGE_TAG.txt
             
             #####Setup ssh connection with target server#####
+            #echo "$PRIVATE_KEY" > server_private.pem
+            #chmod 0600 server_private.pem
+            #ls -lrth
+            #cat server_private.pem
+            #scp -o StrictHostKeyChecking=no -o LogLevel=ERROR -o UserKnownHostsFile=/dev/null -i server_private.pem DOCKER_IMAGE_TAG.txt $USER_NAME@$HOSTNAME:/tmp
+            
+        - name: Setup ssh connection with target and deployment
+          run: |
             echo "$PRIVATE_KEY" > server_private.pem
             chmod 0600 server_private.pem
             ls -lrth
             cat server_private.pem
+            #copy image name and tag to target server
             scp -o StrictHostKeyChecking=no -o LogLevel=ERROR -o UserKnownHostsFile=/dev/null -i server_private.pem DOCKER_IMAGE_TAG.txt $USER_NAME@$HOSTNAME:/tmp
-            
-        #- name: Setup ssh connection
-          #env:
-          #    PRIVATE_KEY: ${{ secrets.TEST_SERVER_PRIVATE_KEY }}
-          #    HOSTNAME: ${{secrets.TEST_SERVER_HOSTNAME}}
-          #    USER_NAME: ec2-user
-          #    CONTAINER_NAME: test-ui
-          #    CONTAINER_PORT: 80
-          #    CONTAINER_IMAGE: ${{secrets.AWS_ECR_REPO}}
-          #run: |
-          #  cat "$PRIVATE_KEY" > server_private.pem && chmod 0600 server_private.pem
-          #  cat server_private.pem
-          #  scp -o StrictHostKeyChecking=no -o LogLevel=ERROR -o UserKnownHostsFile=/dev/null -i server_private.pem DOCKER_IMAGE_TAG.txt $USER_NAME@$HOSTNAME:/tmp
+
+            #deployement start on target server
+            ssh -t -o StrictHostKeyChecking=no -o LogLevel=ERROR -o UserKnownHostsFile=/dev/null -i server_private.pem $USER_NAME@$HOSTNAME << 'EOF'
+            export DOCKER_TAG=`cat /tmp/DOCKER_IMAGE_TAG.txt`
+            sudo mkdir -p "${DOCKER_TAG}"
+            echo "nginx:alpine" > image_name.txt
+            export IMAGE=`cat image_name.txt`
+            sudo docker run -itd -p 81:80 --name=test $IMAGE
+            exit
+            EOF
+            '
