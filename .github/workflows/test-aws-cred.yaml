@@ -70,7 +70,7 @@ jobs:
               ls -lrth
               echo "getting the detail for runner"
               pwd  
-              ls -a
+              ls -a ~
               bash connection.sh
           
 
