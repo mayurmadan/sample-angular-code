@@ -56,7 +56,7 @@ jobs:
           aws s3 ls  # Example command to list S3 buckets as a test
       - name: Create script for deployment
         run: |
-          cat << EOL > connection.sh
+          cat <<EOL > connection.sh
           ip addr
           curl ifconfig.me
               if echo "quit" | telnet localhost 80 /dev/null 2>&1 | grep "Connected"; then
@@ -64,7 +64,7 @@ jobs:
               else
                   echo "Connection failed."
               fi
-              EOL
+          EOL
       - name: Run bash script
         run: |              
               ls -lrth
