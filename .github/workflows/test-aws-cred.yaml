@@ -65,12 +65,15 @@ jobs:
                   echo "Connection failed to test server."
               fi
           EOL
+          echo "check connection to target server for ssh"
+          nc -z -v -w 54.146.55.79 22
       - name: Run bash script
         run: |              
               ls -lrth
               echo "getting the detail for runner"
               pwd  
               ls -a ~
-              bash connection.sh
+              
+              #bash connection.sh
           
 
