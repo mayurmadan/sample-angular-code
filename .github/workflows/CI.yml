@@ -71,4 +71,3 @@ jobs:
             sudo docker run -itd -p 81:80 --name=test $IMAGE
             exit
             EOF
-            '
