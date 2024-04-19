@@ -37,3 +37,7 @@ jobs:
             docker tag $REGISTRY/$REPOSITORY:$IMAGE_SHA $REGISTRY/$REPOSITORY:latest
             docker push $REGISTRY/$REPOSITORY:$IMAGE_SHA
             docker push $REGISTRY/$REPOSITORY:latest
+            echo $REGISTRY/$REPOSITORY:$IMAGE_SHA > DOCKER_IMAGE_TAG.txt
+            ls -lrth 
+            cat DOCKER_IMAGE_TAG.txt
+            pwd
