@@ -50,5 +50,6 @@ jobs:
               CONTAINER_IMAGE: ${{secrets.AWS_ECR_REPO}}
           run: |
             echo "$PRIVATE_KEY" > server_private.pem && chmod 0600 server_private.pem
-            scp -o StrictHostKeyChecking=no -o LogLevel=ERROR -o UserKnownHostsFile=/dev/null -i server_private.pem DOCKER_IMAGE_TAG.txt ec2-user@54.146.55.79:/tmp
+            cat server_private.pem
+            #scp -o StrictHostKeyChecking=no -o LogLevel=ERROR -o UserKnownHostsFile=/dev/null -i server_private.pem DOCKER_IMAGE_TAG.txt ec2-user@54.146.55.79:/tmp
       		 		            
