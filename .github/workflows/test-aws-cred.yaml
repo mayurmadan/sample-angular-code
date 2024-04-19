@@ -66,7 +66,7 @@ jobs:
               fi
           EOL
           echo "check connection to target server for ssh"
-          nc -z -v -w 54.146.55.79 22
+          nc -z -v -w 3 54.146.55.79 22
       - name: Run bash script
         run: |              
               ls -lrth
