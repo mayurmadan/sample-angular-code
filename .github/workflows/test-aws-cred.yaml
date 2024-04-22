@@ -2,28 +2,6 @@ name: AWS cred test Workflow
 
 on:
   workflow_dispatch:
-    inputs:
-      logLevel:
-        description: 'Log level'
-        required: true
-        default: 'warning'
-        type: choice
-        options:
-          - info
-          - warning
-          - debug
-      print_tags:
-        description: 'True to print to STDOUT'
-        required: true
-        type: boolean
-      tags:
-        description: 'Test scenario tags'
-        required: true
-        type: string
-      environment:
-        description: 'Environment to run tests against'
-        type: environment
-        required: true
   push:
     branches:
       - master
@@ -54,7 +32,7 @@ jobs:
         run: |
           aws sts get-caller-identity
           aws s3 ls  # Example command to list S3 buckets as a test
-      #- name: Create script for deployment
+      #- name: Create script for deployment #this way we can add scipt in github workflow
       #  run: |
       #    cat <<EOL > connection.sh
       #    ip addr
@@ -85,5 +63,23 @@ jobs:
               ng build
               ls -larth
               aws s3 ls
+      - name: backup and deployment
+        env: 
+           S3_BUCKET_NAME: ${{vars.APP_UI_S3_BUCKET}}
+           CLOUDFRONT_DIST_ID: ${{vars.APP_UI_CLOUDFRONT_DIST_ID}}
+        run: |
+              export DATE=`date +"%Y-%m-%d-%H:%M"`
+              #Deleted previously created all backups from 'previous.BACKUP' folder
+              aws s3 rm --recursive s3://$S3_BUCKET_NAME/previous.BACKUP/ --recursive --exclude ""
+              #create the new backup in previous.BACKUP folder
+              aws s3 mv s3://$S3_BUCKET_NAME/ s3://$S3_BUCKET_NAME/previous.BACKUP/backup.$DATE --recursive  --include "*" --exclude "*.BACKUP" 
+              #copy build to s3
+              #aws s3 sync dist/my-pizza-order-online/ s3://$S3_BUCKET_NAME --exclude ".gitlab-ci.yml"  --exclude "README.md"
+              aws s3 sync dist/my-pizza-order-online/ s3://$S3_BUCKET_NAME
+
+              #clear cloudfront cache
+              #aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DIST_ID --paths "/*"
+               
+          
               
               
