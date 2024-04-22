@@ -54,25 +54,25 @@ jobs:
         run: |
           aws sts get-caller-identity
           aws s3 ls  # Example command to list S3 buckets as a test
-      - name: Create script for deployment
-        run: |
-          cat <<EOL > connection.sh
-          ip addr
-          curl ifconfig.me
-              if echo "quit" | telnet 54.146.55.79 22 /dev/null 2>&1 | grep "Connected"; then
-                 echo "Connection successful to test server."
-              else
-                  echo "Connection failed to test server."
-              fi
-          EOL
-          echo "check connection to target server for ssh"
-          nc -z -v -w 3 54.146.55.79 22
-      - name: Run bash script
-        run: |              
-              ls -lrth
-              echo "getting the detail for runner"
-              pwd  
-              ls -a ~
+      #- name: Create script for deployment
+      #  run: |
+      #    cat <<EOL > connection.sh
+      #    ip addr
+      #    curl ifconfig.me
+      #        if echo "quit" | telnet 54.146.55.79 22 /dev/null 2>&1 | grep "Connected"; then
+      #           echo "Connection successful to test server."
+      #        else
+      #           echo "Connection failed to test server."
+      #        fi
+      #    EOL
+      #    echo "check connection to target server for ssh"
+      #    nc -z -v -w 3 54.146.55.79 22
+      #- name: Run bash script
+      #  run: |              
+      #        ls -lrth
+      #        echo "getting the detail for runner"
+      #        pwd  
+      #        ls -a ~
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
