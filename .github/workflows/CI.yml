@@ -2,7 +2,8 @@
 #https://medium.com/@anshita.bhasin/build-and-push-docker-image-to-aws-ecr-using-github-actions-506e9f77f7f8
 #https://docs.github.com/en/actions/publishing-packages/publishing-docker-images#publishing-images-to-docker-hub
 name: Push To ECR
-on: 
+on:
+  workflow_dispatch:
   push: 
     branches: [ "master" ]
 
