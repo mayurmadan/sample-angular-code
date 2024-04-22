@@ -68,6 +68,7 @@ jobs:
            S3_BUCKET_NAME: ${{vars.APP_UI_S3_BUCKET}}
            CLOUDFRONT_DIST_ID: ${{vars.APP_UI_CLOUDFRONT_DIST_ID}}
         run: |
+              echo " bucket name is $S3_BUCKET_NAME"
               export DATE=`date +"%Y-%m-%d-%H:%M"`
               #Deleted previously created all backups from 'previous.BACKUP' folder
               aws s3 rm --recursive s3://$S3_BUCKET_NAME/previous.BACKUP/ --recursive --exclude ""
