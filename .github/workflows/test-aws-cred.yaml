@@ -73,7 +73,17 @@ jobs:
               echo "getting the detail for runner"
               pwd  
               ls -a ~
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '8.x'
+      - name: Install dependencies
+        run: | 
+              npm install -g npm@6.13.4
+              npm install -g @angular/cli@6.0.3
+              npm install
+              ng build
+              ls -larth
+              aws s3 ls
               
-              #bash connection.sh
-          
-
+              
