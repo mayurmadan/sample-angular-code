@@ -15,7 +15,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: List files with ls -lrth
-        run: ls -lrth
+        run: |
+           pwd
+           ls -lrth
 
       - name: List all files (including hidden)
         run: ls -a
